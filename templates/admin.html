@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админка</title>
+    <script>
+        async function updateMessage() {
+            const messageId = document.getElementById('message-id').value;
+            const newContent = document.getElementById('message-content').value;
+            const adminKey = 'your_secret_key'; // Замените на реальный ключ
+
+            try {
+                const response = await fetch(`/admin/update_message/${messageId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Admin-Key': adminKey,
+                    },
+                    body: JSON.stringify({ content: newContent }),
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Сообщение обновлено!');
+                } else {
+                    alert('Ошибка: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Ошибка обновления сообщения:', error);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Админка</h1>
+    <div>
+        <label for="message-id">ID сообщения:</label>
+        <input type="text" id="message-id">
+    </div>
+    <div>
+        <label for="message-content">Новый текст сообщения:</label>
+        <input type="text" id="message-content">
+    </div>
+    <button onclick="updateMessage()">Обновить сообщение</button>
+</body>
+</html>
